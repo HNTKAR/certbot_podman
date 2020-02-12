@@ -16,12 +16,6 @@ echo ""
 read -p "do you want to up this container ? (y/n):" yn
 if [ ${yn,,} = "y" ]; then
 	docker-compose up --build -d
-	#./wait_script.sh
-
-	#cleaning
-	#wait
-	#docker rm setting_lets_encrypt -f
-	#docker rmi setting_lets_encrypt
 	echo "log file is /var/log/docker_log"
 fi
 
