@@ -5,9 +5,11 @@ services:
     ports:
       - "80:80"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /mnt:/mnt
       - /etc/letsencrypt/:/etc/letsencrypt/
-      - /var/log/docker_log:/var/log/docker_log
+      - /var/log/docker_log/lets_encrypt:/var/log/docker_log
     image: lets_encrypt
-    container_name: lets_encrypt 
+    container_name: lets_encrypt
+networks:
+  default:
+    external:
+      name: default_bridge
