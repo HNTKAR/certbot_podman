@@ -1,15 +1,24 @@
 #!/usr/bin/bash
 
 #read setting file
-sed -z s/.*#lets_encrypt//  setting.txt |
-	\sed -z s/#.*// |
-	\sed -e /^$/d |
-	\sed '1d' >setting_lets_encrypt.log
+sed -e "s/^##.*//g"  setting.txt |\
+	sed -ze "s/.*=====lets_encrypt=====//g" \
+	-e  "s/=====.*//g" |\
+	sed -ze "s/.*-----system data-----//g" \
+	-e "s/-----.*//g" |\
+	sed -e /^$/d>lets_encrypt-system.log
+
+sed -e "s/^##.*//g"  setting.txt |\
+	sed -ze "s/.*=====lets_encrypt=====//g" \
+	-e  "s/=====.*//g" |\
+	sed -ze "s/.*-----user data-----//g" \
+	-e "s/-----.*//g" |\
+	sed -e /^$/d>lets_encrypt-user.log
 
 #lets_encrypt setting
 echo "" > wait_script.sh
 chmod 777 wait_script.sh
-cat setting_lets_encrypt.log |awk -F ":" -f script.awk
+cat lets_encrypt-system.log |awk -F ":" -f script.awk
 
 #run container
 echo ""
