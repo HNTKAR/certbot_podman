@@ -1,5 +1,12 @@
 #!/usr/bin/bash
 
+#version test
+version_code="1"
+if [ $(sed -e "s/^##.*//g"  -e "/^$/d" setting.txt|grep version|head -n 1|sed s/.*://) != $version_code ];then
+        echo "setting.txt version error"
+        exit 1;
+fi;
+
 #read setting file
 sed -e "s/^##.*//g"  setting.txt |\
 	sed -ze "s/.*=====lets_encrypt=====//g" \
