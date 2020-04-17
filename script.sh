@@ -11,7 +11,7 @@ fi;
 cd $(dirname $0)
 
 #read setting file
-sed -e "s/^##.*//g"  setting.txt |\
+sed -e "s/^##.*//g"  setting.txt | \
 	sed -ze "s/.*=====lets_encrypt=====//g" \
 	-e  "s/=====.*//g" | \
 	sed -ze "s/.*-----system data-----//g" \
