@@ -1,39 +1,33 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 #version test
 version_code="1"
-if [ $(sed -e "s/^##.*//g"  -e "/^$/d" setting.txt|grep version|head -n 1|sed s/.*://) != $version_code ];then
+setting_file_version=$(sed -e "s/^##.*//g"  -e "/^$/d" setting.txt|grep version|head -n 1|sed s/.*://)
+if [ "x$setting_file_version" != "x$version_code" ];then
         echo "setting.txt version error"
         exit 1;
 fi;
 
+cd $(dirname $0)
+
 #read setting file
 sed -e "s/^##.*//g"  setting.txt |\
 	sed -ze "s/.*=====lets_encrypt=====//g" \
-	-e  "s/=====.*//g" |\
+	-e  "s/=====.*//g" | \
 	sed -ze "s/.*-----system data-----//g" \
-	-e "s/-----.*//g" |\
-	sed -e /^$/d>lets_encrypt-system.log
+	-e "s/-----.*//g" | \
+	sed -e /^$/d>system.log
 
-sed -e "s/^##.*//g"  setting.txt |\
+sed -e "s/^##.*//g"  setting.txt | \
 	sed -ze "s/.*=====lets_encrypt=====//g" \
-	-e  "s/=====.*//g" |\
+	-e  "s/=====.*//g" | \
 	sed -ze "s/.*-----user data-----//g" \
-	-e "s/-----.*//g" |\
-	sed -e /^$/d>lets_encrypt-user.log
-
-#lets_encrypt setting
-echo "" > wait_script.sh
-chmod 777 wait_script.sh
-cat lets_encrypt-system.log |awk -F ":" -f script.awk
+	-e "s/-----.*//g" | \
+	sed -e /^$/d>user.log
 
 #run container
-echo ""
 read -p "do you want to up this container ? (y/n):" yn
 if [ ${yn,,} = "y" ]; then
 	docker-compose up --build -d
-	echo "log file is /var/log/docker_log"
 fi
-
-rm *.log wait_script.sh
-echo "ok!!"
+rm *.log
