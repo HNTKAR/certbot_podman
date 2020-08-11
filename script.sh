@@ -1,33 +1,17 @@
 #!/bin/bash
 
-#version test
-version_code="1"
-setting_file_version=$(sed -e "s/^##.*//g"  -e "/^$/d" setting.txt|grep version|head -n 1|sed s/.*://)
-if [ "x$setting_file_version" != "x$version_code" ];then
-        echo "setting.txt version error"
-        exit 1;
-fi;
-
 cd $(dirname $0)
 
 #read setting file
-sed -e "s/^##.*//g"  setting.txt | \
-	sed -ze "s/.*=====lets_encrypt=====//g" \
-	-e  "s/=====.*//g" | \
-	sed -ze "s/.*-----system data-----//g" \
-	-e "s/-----.*//g" | \
-	sed -e /^$/d>system.log
 
-sed -e "s/^##.*//g"  setting.txt | \
-	sed -ze "s/.*=====lets_encrypt=====//g" \
-	-e  "s/=====.*//g" | \
-	sed -ze "s/.*-----user data-----//g" \
-	-e "s/-----.*//g" | \
-	sed -e /^$/d>user.log
+sed -z -e "s/.*##\+certbot#*//g" \
+	-e "s/##.\+//g" setting.txt >setting.log
 
-#run container
-read -p "do you want to up this container ? (y/n):" yn
+#build image
+read -p "do you want to build this image ? (y/n):" yn
 if [ ${yn,,} = "y" ]; then
-	docker-compose up --build -d
+	podman rmi -f certbot:latest
+	podman build -f Dockerfile -t certbot:latest
 fi
+
 rm *.log
