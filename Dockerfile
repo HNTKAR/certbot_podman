@@ -2,10 +2,9 @@ FROM centos
 MAINTAINER kusari-k
 
 RUN sed -i -e "\$afastestmirror=true" /etc/dnf/dnf.conf
-RUN dnf update -y && \
-	dnf install -y epel-release && \
-	dnf update -y && \
+RUN dnf install -y epel-release && \
 	dnf install -y certbot && \
+	dnf update -y && \
 	dnf clean all
 
 COPY setting.log run.sh /usr/local/bin/
