@@ -10,7 +10,7 @@ sed -z -e "s/.*##\+certbot#*//g" \
 #build image
 read -p "do you want to build this image ? (y/n):" yn
 if [ ${yn,,} = "y" ]; then
-	podman rmi -f certbot:latest
+	podman rmi -f certbot
 	podman build -f Dockerfile -t certbot:latest
 fi
 
