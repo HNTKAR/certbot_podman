@@ -31,13 +31,19 @@ spec:
       readOnlyRootFilesystem: false
     tty: true
     volumeMounts:
-    - mountPath: /test
-      name: test-volume
+    - mountPath: /etc/letsencrypt/
+      name: certbot-volume
+    - mountPath: /var/log/
+      name: certbot-volume-2
     workingDir: /
   volumes:
   - hostPath:
-      path: /home/podman/certbot_pod
+      path: /home/podman/certbot_pod/letsencrypt/
       type: Directory
-    name: test-volume
+    name: certbot-volume
+  - hostPath:
+      path: /home/podman/certbot_pod/log/
+      type: Directory
+    name: certbot-volume-2
 status: {}
 
