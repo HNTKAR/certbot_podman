@@ -21,7 +21,7 @@ podman play kube podman.yml
 
 ```
 sudo mkdir -p -m 777 /home/podman/certbot_pod/letsencrypt /home/podman/certbot_pod/log
-sudo semanage fcontext -a -t container_file_t /home/podman/certbot_pod
+sudo semanage fcontext -a -t container_file_t "/home/podman/certbot_pod(/.*)?"
 sudo restorecon -R /home/podman
 ```
 
