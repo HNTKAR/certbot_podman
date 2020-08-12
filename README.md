@@ -14,14 +14,13 @@ domain:example.org,example.net
 ./script.sh
 sudo firewall-cmd --add-forward-port=port=80:proto=tcp:toport=1080 --permanent
 sudo firewall-cmd --reload
-podman pod create -p 1080:80 -n certbot_pod
-podman run -dt --pod certbot_pod --name certbot certbot
+podman play kube podman.yml
 ```
 
 #### _SE-Linux setting_
 
 ```
-sudo mkdir -p -m 777  /home/podman/certbot_pod
+sudo mkdir -p -m 777 /home/podman/certbot_pod/letsencrypt /home/podman/certbot_pod/log
 sudo semanage fcontext -a -t container_file_t /home/podman/certbot_pod
 sudo restorecon -R /home/podman
 ```
