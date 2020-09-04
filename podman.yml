@@ -17,7 +17,7 @@ spec:
       value: ssl_pod
     - name: container
       value: podman
-    image: localhost/certbot:latest
+    image: localhost/certbot
     name: certbot
     ports:
     - containerPort: 80

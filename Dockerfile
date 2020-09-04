@@ -1,4 +1,4 @@
-FROM centos
+FROM centos:8
 MAINTAINER kusari-k
 
 RUN sed -i -e "\$afastestmirror=true" /etc/dnf/dnf.conf
