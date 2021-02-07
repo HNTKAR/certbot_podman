@@ -3,7 +3,6 @@
 cd $(dirname $0)
 
 #read setting file
-
 sed -z -e "s/.*##\+ssl#*//g" \
 	-e "s/##.\+//g" setting.txt >setting.log
 
