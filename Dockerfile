@@ -1,13 +1,19 @@
-FROM centos:8
-MAINTAINER kusari-k
+FROM rockylinux:9
 
-RUN sed -i -e "\$afastestmirror=true" /etc/dnf/dnf.conf
-RUN dnf install -y epel-release && \
-	dnf update -y && \
-	dnf install -y certbot && \
-	dnf clean all
+ARG DOMAIN
+ARG KEY_FILE
+ARG DRY_RUN_FLAG=""
+ENV FLAG=${DRY_RUN_FLAG:+"--dry-run"}
+ENV DOMAIN=${DOMAIN}
+ENV MAIL="--register-unsafely-without-email"
 
-COPY setting.log run.sh /usr/local/bin/
-RUN  chmod 755 /usr/local/bin/run.sh
+RUN dnf -y update && \
+	dnf -y install python3-pip && \
+	pip install certbot certbot-dns-google
+
+COPY ["${KEY_FILE}","/key.json"]
+COPY ["run.sh", "/usr/local/bin/"]
+RUN chmod 600 /key.json
+RUN chmod 777 -R /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/run.sh"]
