@@ -1,0 +1,16 @@
+FROM rockylinux:9
+
+ARG KEY_FILE
+ARG DRY_RUN_FLAG=""
+ENV FLAG=${DRY_RUN_FLAG:+"--dry-run"}
+
+RUN dnf -y update && \
+	dnf -y install python3-pip && \
+	pip install certbot certbot-dns-google
+
+COPY ["${KEY_FILE}","/key.json"]
+COPY ["run_renew.sh", "/usr/local/bin/"]
+RUN chmod 600 /key.json
+RUN chmod 777 -R /usr/local/bin/
+
+ENTRYPOINT ["/usr/local/bin/run_renew.sh"]
