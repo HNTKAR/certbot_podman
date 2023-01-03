@@ -28,9 +28,13 @@ podman run --detach --replace --mount type=volume,source=certbot_dir,destination
 ```
 
 # 自動更新を行う場合
+イメージのビルド
+```bash
+podman build --build-arg KEY_FILE=Config/key.json --tag certbot-renew:1.1 --file Dockerfile-renew .
+```
 cronに以下を登録
 ```bash
-podman run --detach --replace --mount type=volume,source=certbot_dir,destination=/etc/letsencrypt --mount type=volume,source=certbot_log,destination=/var/log/letsencrypt --name certbot-renew certbot-renew:1.1
+0 3 * * * podman run --detach --replace --mount type=volume,source=certbot_dir,destination=/etc/letsencrypt --mount type=volume,source=certbot_log,destination=/var/log/letsencrypt --name certbot-renew certbot-renew:1.1
 ```
 
 ## 参考資料
