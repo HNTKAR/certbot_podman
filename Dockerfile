@@ -2,10 +2,11 @@ FROM python
 
 ARG KEY_FILE
 
-RUN pip install certbot certbot-dns-cloudflare certbot-dns-google
+# https://eff-certbot.readthedocs.io/en/latest/packaging.html
+# https://eff-certbot.readthedocs.io/en/latest/using.html#dns-plugins
+RUN pip install certbot-dns-cloudflare
 
 COPY ["${KEY_FILE}","/key.ini"]
-# COPY ["${KEY_FILE}","/key.json"]
 RUN chmod 600 /key.ini
-ENTRYPOINT [ "certbot","certonly","--agree-tos","--dns-cloudflare","--register-unsafely-without-email","--dns-cloudflare-credentials" ,"/key.ini"]
-# CMD [ "--dry-run" ]
+ENTRYPOINT [ "certbot","certonly","--register-unsafely-without-email","--agree-tos","--dns-cloudflare","--dns-cloudflare-credentials" ,"/key.ini"]
+CMD [ "--dry-run" ]
