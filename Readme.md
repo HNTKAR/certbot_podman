@@ -11,15 +11,32 @@ Cloudflareを用いてワイルドカード証明書を作成する場合、事�
 |鍵ファイル|certbot_podman/_key|
 
 # 実行スクリプト
+## Quadle使用時
 ```bash
-cd certbot_podman
-
-# ドメインの設定(ドメインごとに -d が必要)
-DOMAIN="-d sample.example.com -d test.example.com"
-
 # イメージのビルド
+cd certbot_podman
 podman build --build-arg KEY_FILE=_key --tag certbot --file Dockerfile
 
+# 必要に応じて Quadret/certbot.container を書き換える
+mkdir -p $HOME/.config/containers/systemd/
+cp Quadlet/* $HOME/.config/containers/systemd/
+systemctl --user daemon-reload
+
+# コンテナ起動
+systemctl --user start podman_container_certbot.service
+```
+### 自動実行を行う場合
+
+cronに以下を登録
+```bash
+0 3 * * * systemctl --user restart podman_container_certbot.service
+```
+
+## Quadlet非使用時
+```bash
+# ビルドは同じ
+# ドメインの設定(ドメインごとに -d が必要)
+DOMAIN="-d sample.example.com -d test.example.com"
 # コンテナの実行
 podman run --detach --replace --mount type=volume,source=certbot,destination=/etc/letsencrypt --name certbot certbot $DOMAIN --keep-until-expiring
 
