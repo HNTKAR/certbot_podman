@@ -1,4 +1,5 @@
 FROM python
+ENV DOMAIN="-d example.com -d *.example.com"
 
 # https://eff-certbot.readthedocs.io/en/latest/using.html#dns-plugins
 # https://certbot-dns-cloudflare.readthedocs.io/en/stable/
