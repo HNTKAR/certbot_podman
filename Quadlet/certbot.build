@@ -1,0 +1,7 @@
+[Service]
+Environment=REPO=HNTKAR
+[Build]
+ImageTag=certbot
+ServiceName=podman_build_certbot
+SetWorkingDirectory=https://github.com/${REPO}/certbot_podman.git
+File=Dockerfile

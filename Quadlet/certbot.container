@@ -1,0 +1,7 @@
+[Container]
+ServiceName=podman_container_certbot
+ContainerName=certbot
+Image=localhost/certbot
+AutoUpdate=local
+Secret=certbot_key
+Mount=type=volume,source=certbot.volume,destination=/etc/letsencrypt
