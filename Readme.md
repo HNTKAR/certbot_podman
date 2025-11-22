@@ -45,11 +45,11 @@ podman build --tag certbot --file Dockerfile .
 
 # コンテナの実行
 DOMAIN="-d sample.example.com -d *.example.com"
-podman run --detach --replace --mount type=volume,source=certbot-volume,destination=/etc/letsencrypt --env="DOMAIN=$DOMAIN" --secret certbot_key --name certbot certbot
+podman run --detach --replace --mount type=volume,source=certbot-volume,destination=/V ---mount type=volume,source=certificate,destination=/etc/letsencrypt -env="DOMAIN=$DOMAIN" --secret certbot_key --name certbot certbot
 ```
 
 ### 自動更新を行う場合
 cronに以下を登録
 ```sh
-0 3 * * * DOMAIN="-d sample.example.com -d *.example.com" podman run --detach --replace --mount type=volume,source=certbot-volume,destination=/etc/letsencrypt --env="DOMAIN=$DOMAIN" --secret certbot_key --name certbot certbot
+0 3 * * * DOMAIN="-d sample.example.com -d *.example.com" podman run --detach --replace --mount type=volume,source=certbot-volume,destination=/V ---mount type=volume,source=certificate,destination=/etc/letsencrypt --env="DOMAIN=$DOMAIN" --secret certbot_key --name certbot certbot
 ```

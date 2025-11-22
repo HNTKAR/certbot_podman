@@ -4,4 +4,5 @@ ContainerName=certbot
 Image=localhost/certbot
 AutoUpdate=local
 Secret=certbot_key
-Mount=type=volume,source=certbot.volume,destination=/etc/letsencrypt
+Mount=type=volume,source=certbot.volume,destination=/V
+Mount=type=volume,source=certificate.volume,destination=/etc/letsencrypt
